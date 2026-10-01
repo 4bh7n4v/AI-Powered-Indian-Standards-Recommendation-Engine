@@ -1,0 +1,13 @@
+SAMPLE TENDER 01 - TECHNICAL SPECIFICATIONS (demonstration only)
+Expected result: ACCEPTABLE - every item cites the current edition, its test methods, safety standards and certification.
+Construction of Administrative Block, Central Government Office Complex
+
+1. Reinforcement steel: High strength deformed TMT bars, grade Fe 500D, 8 mm to 32 mm, conforming to IS 1786:2008 with all amendments. Tests as per IS 1608 (Part 1):2018, IS 1599:2019 and IS 228. Bars shall bear the ISI mark under a valid BIS licence.
+
+2. Electrical wiring: PVC insulated copper conductor house wiring cable, 1.5 sq mm and 2.5 sq mm, conforming to IS 694:2010 with all amendments. Tests as per IS 10810. Cables shall bear the ISI mark under a valid BIS licence.
+
+3. Street lighting: LED street light luminaire 90 W conforming to IS 10322 (Part 5/Sec 3):2012 and IS 10322 (Part 1):2014. LED driver conforming to IS 15885 (Part 2/Sec 13):2012. Tests as per IS/IEC 60529:2001 (IP66), IS 16105:2012 and IS 16106:2012. The luminaire shall be registered with BIS under the Compulsory Registration Scheme (CRS).
+
+4. Water storage: Rotational moulded polyethylene water storage tank, 2000 litre, conforming to IS 12701:1996. Migration test as per IS 9845:1998.
+
+5. Water supply pipes: uPVC pipes for potable water supply, 110 mm, conforming to IS 4985:2021 with all amendments. Tests as per IS 12235.

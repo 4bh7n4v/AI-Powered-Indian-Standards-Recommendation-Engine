@@ -1,0 +1,13 @@
+SAMPLE TENDER 02 - TECHNICAL SPECIFICATIONS (demonstration only)
+Expected result: PARTIALLY ACCEPTABLE - some items are complete, others need revision or are not acceptable.
+Electrification and Water Supply Works, District Hospital
+
+1. Electrical wiring: PVC insulated copper conductor house wiring cable, 1.5 sq mm, conforming to IS 694:2010 with all amendments. Tests as per IS 10810. Cables shall bear the ISI mark under a valid BIS licence.
+
+2. LT power cable: 3.5 core 95 sq mm aluminium conductor armoured XLPE cable, 1.1 kV, conforming to IS 7098 (Part 1):1988. Cables shall bear the ISI mark.
+
+3. Water supply pipes: uPVC pipes for potable water supply, 90 mm and 110 mm, conforming to IS 4985:2000.
+
+4. Water storage: Rotational moulded polyethylene overhead water storage tank, 1000 litre capacity, conforming to IS 12701:1996. Migration test as per IS 9845:1998.
+
+5. Street lighting: LED street light luminaire 60 W, IP66, conforming to IS 10322 (Part 5/Sec 3):2012.

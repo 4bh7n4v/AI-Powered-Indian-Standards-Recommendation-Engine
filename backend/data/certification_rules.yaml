@@ -1,0 +1,42 @@
+# Certification rule pack (demo). Git + YAML, date-versioned.
+# Each rule says which certification scheme applies to which standards.
+# verified: false means the order name / date has not yet been checked against
+# the official notification. The engine then reports the result as UNVERIFIED.
+version: "2026-09-30"
+schemes:
+  BIS_ISI:
+    name: "BIS Product Certification (ISI Mark) under a Quality Control Order"
+    short: "ISI Mark (QCO)"
+  CRS:
+    name: "BIS Compulsory Registration Scheme (CRS)"
+    short: "CRS registration"
+  HALLMARKING:
+    name: "BIS Hallmarking"
+    short: "Hallmarking (HUID)"
+rules:
+  - id: qco-steel
+    scheme: BIS_ISI
+    applies_to: [IS-1786, IS-2062]
+    order: "Steel and Steel Products (Quality Control) Order"
+    effective_from: null
+    verified: false
+  - id: qco-cables
+    scheme: BIS_ISI
+    applies_to: [IS-694, IS-1554-P1]
+    order: "Electrical Wires, Cables, Appliances and Protection Devices and Accessories (Quality Control) Order, 2020"
+    effective_from: null
+    verified: false
+  - id: crs-led
+    scheme: CRS
+    applies_to: [IS-10322-P5-S3, IS-15885-P2-S13]
+    order: "Electronics and Information Technology Goods (Requirement for Compulsory Registration) Order, 2012"
+    effective_from: null
+    verified: false
+  - id: hallmark-gold
+    scheme: HALLMARKING
+    applies_to: [IS-1417]
+    order: "Hallmarking of Gold Jewellery and Gold Artefacts Order, 2020"
+    effective_from: "2021-06-16"
+    verified: false
+# Product standards that are in the registry but have no rule here are reported
+# as "no mandatory scheme found in rule pack", never as "not mandatory".

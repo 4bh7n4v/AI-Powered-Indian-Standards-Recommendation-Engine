@@ -1,0 +1,70 @@
+{
+  "meta": {
+    "as_of": "2026-09-30",
+    "verified": false,
+    "edge_types": {
+      "normative_ref": "Normative reference",
+      "test_method": "Test method",
+      "terminology": "Terminology",
+      "safety": "Safety",
+      "installation": "Installation / code of practice",
+      "related_product": "Related product"
+    },
+    "notice": "Typed links between standards for the demo domains. Must be checked against the normative-references clause of each standard."
+  },
+  "edges": [
+    ["IS-1786", "IS-1387", "normative_ref"],
+    ["IS-1786", "IS-1608-P1", "test_method"],
+    ["IS-1786", "IS-1599", "test_method"],
+    ["IS-1786", "IS-228", "test_method"],
+    ["IS-1786", "IS-1956", "terminology"],
+    ["IS-1786", "IS-2502", "installation"],
+    ["IS-1786", "IS-456", "installation"],
+    ["IS-1786", "IS-2062", "related_product"],
+    ["IS-2062", "IS-1387", "normative_ref"],
+    ["IS-2062", "IS-1608-P1", "test_method"],
+    ["IS-2062", "IS-1599", "test_method"],
+    ["IS-2062", "IS-228", "test_method"],
+    ["IS-2062", "IS-1956", "terminology"],
+    ["IS-2062", "IS-1786", "related_product"],
+
+    ["IS-694", "IS-8130", "normative_ref"],
+    ["IS-694", "IS-10810", "test_method"],
+    ["IS-694", "IS-1885-P32", "terminology"],
+    ["IS-694", "IS-732", "installation"],
+    ["IS-694", "IS-1554-P1", "related_product"],
+    ["IS-1554-P1", "IS-8130", "normative_ref"],
+    ["IS-1554-P1", "IS-5831", "normative_ref"],
+    ["IS-1554-P1", "IS-3961-P2", "normative_ref"],
+    ["IS-1554-P1", "IS-10810", "test_method"],
+    ["IS-1554-P1", "IS-1885-P32", "terminology"],
+    ["IS-1554-P1", "IS-1255", "installation"],
+    ["IS-1554-P1", "IS-7098-P1", "related_product"],
+    ["IS-7098-P1", "IS-8130", "normative_ref"],
+    ["IS-7098-P1", "IS-5831", "normative_ref"],
+    ["IS-7098-P1", "IS-10810", "test_method"],
+    ["IS-7098-P1", "IS-1885-P32", "terminology"],
+    ["IS-7098-P1", "IS-1255", "installation"],
+    ["IS-7098-P1", "IS-1554-P1", "related_product"],
+
+    ["IS-10322-P5-S3", "IS-10322-P1", "safety"],
+    ["IS-10322-P5-S3", "IS-15885-P2-S13", "safety"],
+    ["IS-10322-P5-S3", "IS-IEC-60529", "test_method"],
+    ["IS-10322-P5-S3", "IS-16105", "test_method"],
+    ["IS-10322-P5-S3", "IS-16106", "test_method"],
+    ["IS-10322-P5-S3", "IS-16101", "terminology"],
+    ["IS-10322-P5-S3", "IS-1944-P1-2", "installation"],
+
+    ["IS-1417", "IS-1418", "test_method"],
+    ["IS-1417", "IS-15820", "test_method"],
+
+    ["IS-12701", "IS-10146", "normative_ref"],
+    ["IS-12701", "IS-9845", "test_method"],
+    ["IS-12701", "IS-10500", "related_product"],
+    ["IS-12701", "IS-4985", "related_product"],
+    ["IS-4985", "IS-12235", "test_method"],
+    ["IS-4985", "IS-7634-P3", "installation"],
+    ["IS-4985", "IS-10500", "related_product"],
+    ["IS-4985", "IS-12701", "related_product"]
+  ]
+}

@@ -1,0 +1,326 @@
+{
+  "meta": {
+    "name": "Demo seed: Indian Standards registry",
+    "as_of": "2026-09-30",
+    "verified": false,
+    "notice": "Illustrative seed for the SIH prototype. Scope text is a short paraphrase written by the team, not BIS text. Editions, amendments and certification status must be checked against the BIS Standards Portal before any real use.",
+    "source": "https://standardsbis.bsbedge.com/ (BIS Standards Portal) - to be verified",
+    "domains": {
+      "steel_reinforcement": "Steel reinforcement bars and structural steel",
+      "power_cables": "Electrical wires and power cables",
+      "led_street_lighting": "LED luminaires for road and street lighting",
+      "gold_jewellery": "Gold jewellery and artefacts",
+      "water_storage_pipes": "Plastic water storage tanks and PVC water pipes"
+    },
+    "categories": {
+      "product": "Product specification",
+      "test_method": "Test method",
+      "terminology": "Terminology",
+      "safety": "Safety",
+      "installation": "Installation / code of practice",
+      "normative": "General / material requirement"
+    }
+  },
+  "standards": [
+    {
+      "id": "IS-1786", "number": "IS 1786", "year": 2008, "domain": "steel_reinforcement", "category": "product",
+      "title": "High strength deformed steel bars and wires for concrete reinforcement - Specification",
+      "scope": "Requirements for high strength deformed steel bars and wires (TMT / HYSD rebars) used as reinforcement in concrete, covering strength grades such as Fe 415, Fe 500, Fe 500D, Fe 550 and Fe 600, chemical composition, mechanical properties, bend and rebend tests, marking and supply.",
+      "keywords": ["TMT bar", "rebar", "reinforcement bar", "HYSD", "Fe 500D", "Fe 500", "Fe 415", "deformed bar", "sariya", "construction steel"],
+      "superseded_editions": [1985, 1979],
+      "amendments": []
+    },
+    {
+      "id": "IS-2062", "number": "IS 2062", "year": 2011, "domain": "steel_reinforcement", "category": "product",
+      "title": "Hot rolled medium and high tensile structural steel - Specification",
+      "scope": "Requirements for hot rolled steel plates, strips, sections, flats and bars of medium and high tensile strength used in structural work such as buildings, bridges, towers and fabricated steel structures, in grades E250 to E650.",
+      "keywords": ["structural steel", "steel plate", "steel section", "angle", "channel", "beam", "E250", "E350", "MS plate", "fabrication"],
+      "superseded_editions": [2006, 1999],
+      "amendments": []
+    },
+    {
+      "id": "IS-1608-P1", "number": "IS 1608 (Part 1)", "year": 2018, "domain": "steel_reinforcement", "category": "test_method",
+      "title": "Metallic materials - Tensile testing - Part 1: Method of test at room temperature",
+      "scope": "Method of tensile testing of metallic materials at room temperature to determine yield strength, tensile strength, elongation and reduction of area.",
+      "keywords": ["tensile test", "yield strength", "elongation", "UTS"],
+      "superseded_editions": [2005],
+      "amendments": []
+    },
+    {
+      "id": "IS-1599", "number": "IS 1599", "year": 2019, "domain": "steel_reinforcement", "category": "test_method",
+      "title": "Metallic materials - Bend test",
+      "scope": "Method for determining the ability of metallic materials to undergo plastic deformation in bending, used for bars, wires, plates and sections.",
+      "keywords": ["bend test", "rebend test", "ductility"],
+      "superseded_editions": [2012],
+      "amendments": []
+    },
+    {
+      "id": "IS-228", "number": "IS 228 (all parts)", "year": null, "domain": "steel_reinforcement", "category": "test_method",
+      "title": "Methods for chemical analysis of steels",
+      "scope": "Series of methods for determining carbon, sulphur, phosphorus, manganese and other elements in plain carbon and alloy steels.",
+      "keywords": ["chemical analysis", "carbon content", "sulphur", "phosphorus"],
+      "superseded_editions": [],
+      "amendments": []
+    },
+    {
+      "id": "IS-1387", "number": "IS 1387", "year": 1993, "domain": "steel_reinforcement", "category": "normative",
+      "title": "General requirements for the supply of metallurgical materials",
+      "scope": "General delivery conditions for metallurgical materials such as sampling, inspection, retests, rejection, test certificates and marking, referred to by many steel product standards.",
+      "keywords": ["supply conditions", "test certificate", "sampling", "inspection"],
+      "superseded_editions": [],
+      "amendments": []
+    },
+    {
+      "id": "IS-1956", "number": "IS 1956 (all parts)", "year": null, "domain": "steel_reinforcement", "category": "terminology",
+      "title": "Glossary of terms relating to iron and steel",
+      "scope": "Definitions of terms used for iron and steel products, including steelmaking, rolling, sections and bars.",
+      "keywords": ["glossary", "steel terms", "definitions"],
+      "superseded_editions": [],
+      "amendments": []
+    },
+    {
+      "id": "IS-2502", "number": "IS 2502", "year": 1963, "domain": "steel_reinforcement", "category": "installation",
+      "title": "Code of practice for bending and fixing of bars for concrete reinforcement",
+      "scope": "Practice for cutting, bending, placing, fixing and tying reinforcement bars at site in reinforced concrete work.",
+      "keywords": ["bar bending", "bar bending schedule", "fixing reinforcement", "site practice"],
+      "superseded_editions": [],
+      "amendments": []
+    },
+    {
+      "id": "IS-456", "number": "IS 456", "year": 2000, "domain": "steel_reinforcement", "category": "installation",
+      "title": "Plain and reinforced concrete - Code of practice",
+      "scope": "Code of practice for the design and construction of plain and reinforced concrete structures, including requirements for materials, durability, cover and workmanship.",
+      "keywords": ["RCC", "reinforced concrete", "concrete design", "building construction"],
+      "superseded_editions": [1978],
+      "amendments": []
+    },
+
+    {
+      "id": "IS-694", "number": "IS 694", "year": 2010, "domain": "power_cables", "category": "product",
+      "title": "Polyvinyl chloride insulated unsheathed and sheathed cables/cords with rigid and flexible conductor for rated voltages up to and including 450/750 V",
+      "scope": "Requirements for PVC insulated single-core and multi-core building wires, flexible cords and cables with copper or aluminium conductors for fixed wiring and appliances at voltages up to 450/750 V.",
+      "keywords": ["house wire", "building wire", "electrical wire", "flexible wire", "FR wire", "PVC wire", "copper wire", "wiring cable", "domestic wiring"],
+      "superseded_editions": [1990],
+      "amendments": []
+    },
+    {
+      "id": "IS-1554-P1", "number": "IS 1554 (Part 1)", "year": 1988, "domain": "power_cables", "category": "product",
+      "title": "PVC insulated (heavy duty) electric cables - Part 1: For working voltages up to and including 1100 V",
+      "scope": "Requirements for PVC insulated, PVC sheathed heavy-duty power and control cables, armoured or unarmoured, with copper or aluminium conductors for voltages up to 1100 V.",
+      "keywords": ["LT cable", "power cable", "armoured cable", "control cable", "1.1 kV cable", "PVC cable", "underground cable"],
+      "superseded_editions": [1976],
+      "amendments": []
+    },
+    {
+      "id": "IS-7098-P1", "number": "IS 7098 (Part 1)", "year": 1988, "domain": "power_cables", "category": "product",
+      "title": "Crosslinked polyethylene insulated PVC sheathed cables - Part 1: For working voltage up to and including 1100 V",
+      "scope": "Requirements for XLPE insulated, PVC sheathed power cables, armoured or unarmoured, with copper or aluminium conductors for low-voltage distribution up to 1100 V.",
+      "keywords": ["XLPE cable", "LT XLPE", "power cable", "armoured cable", "aluminium cable", "distribution cable"],
+      "superseded_editions": [1977],
+      "amendments": []
+    },
+    {
+      "id": "IS-8130", "number": "IS 8130", "year": 2013, "domain": "power_cables", "category": "normative",
+      "title": "Conductors for insulated electric cables and flexible cords - Specification",
+      "scope": "Classes, sizes and maximum resistance of copper and aluminium conductors used in insulated cables and flexible cords.",
+      "keywords": ["conductor", "conductor resistance", "copper conductor", "aluminium conductor", "sq mm"],
+      "superseded_editions": [1984],
+      "amendments": []
+    },
+    {
+      "id": "IS-5831", "number": "IS 5831", "year": 1984, "domain": "power_cables", "category": "normative",
+      "title": "PVC insulation and sheath of electric cables - Specification",
+      "scope": "Material requirements for PVC compounds used as insulation and sheath of electric cables.",
+      "keywords": ["PVC compound", "insulation", "sheath"],
+      "superseded_editions": [],
+      "amendments": []
+    },
+    {
+      "id": "IS-10810", "number": "IS 10810 (all parts)", "year": null, "domain": "power_cables", "category": "test_method",
+      "title": "Methods of test for cables",
+      "scope": "Series of test methods for electric cables covering conductor resistance, insulation resistance, high voltage test, flammability, tensile strength of insulation and other properties.",
+      "keywords": ["cable test", "insulation resistance", "high voltage test", "flammability test"],
+      "superseded_editions": [],
+      "amendments": []
+    },
+    {
+      "id": "IS-3961-P2", "number": "IS 3961 (Part 2)", "year": 1967, "domain": "power_cables", "category": "normative",
+      "title": "Recommended current ratings for cables - Part 2: PVC insulated and PVC sheathed heavy duty cables",
+      "scope": "Recommended continuous current ratings and derating factors for PVC insulated heavy-duty cables under standard installation conditions.",
+      "keywords": ["current rating", "ampacity", "derating factor", "cable sizing"],
+      "superseded_editions": [],
+      "amendments": []
+    },
+    {
+      "id": "IS-1255", "number": "IS 1255", "year": 1983, "domain": "power_cables", "category": "installation",
+      "title": "Code of practice for installation and maintenance of power cables up to and including 33 kV rating",
+      "scope": "Practice for laying, jointing, terminating, testing and maintaining power cables in ground, ducts, trays and buildings.",
+      "keywords": ["cable laying", "cable installation", "jointing", "termination", "trenching"],
+      "superseded_editions": [],
+      "amendments": []
+    },
+    {
+      "id": "IS-732", "number": "IS 732", "year": 2019, "domain": "power_cables", "category": "installation",
+      "title": "Code of practice for electrical wiring installations",
+      "scope": "Practice for design, selection, erection, inspection and testing of low-voltage electrical wiring installations in buildings.",
+      "keywords": ["electrical wiring", "wiring installation", "building wiring", "electrical installation"],
+      "superseded_editions": [1989],
+      "amendments": []
+    },
+    {
+      "id": "IS-1885-P32", "number": "IS 1885 (Part 32)", "year": 1993, "domain": "power_cables", "category": "terminology",
+      "title": "Electrotechnical vocabulary - Part 32: Electric cables",
+      "scope": "Terms and definitions relating to electric cables, their components and tests.",
+      "keywords": ["vocabulary", "cable terms", "definitions"],
+      "superseded_editions": [1971],
+      "amendments": []
+    },
+
+    {
+      "id": "IS-10322-P5-S3", "number": "IS 10322 (Part 5/Sec 3)", "year": 2012, "domain": "led_street_lighting", "category": "product",
+      "title": "Luminaires - Part 5: Particular requirements - Section 3: Luminaires for road and street lighting",
+      "scope": "Particular safety and construction requirements for luminaires used for road and street lighting, including LED street light fittings, with tungsten, discharge or LED light sources.",
+      "keywords": ["LED street light", "street light", "road lighting", "luminaire", "street light fitting", "pole light", "outdoor lighting"],
+      "superseded_editions": [],
+      "amendments": []
+    },
+    {
+      "id": "IS-10322-P1", "number": "IS 10322 (Part 1)", "year": 2014, "domain": "led_street_lighting", "category": "safety",
+      "title": "Luminaires - Part 1: General requirements and tests",
+      "scope": "General safety requirements and tests for luminaires, covering classification, marking, construction, protection against electric shock, ingress protection and thermal endurance.",
+      "keywords": ["luminaire safety", "electric shock", "general requirements"],
+      "superseded_editions": [1982],
+      "amendments": []
+    },
+    {
+      "id": "IS-15885-P2-S13", "number": "IS 15885 (Part 2/Sec 13)", "year": 2012, "domain": "led_street_lighting", "category": "safety",
+      "title": "Safety of lamp control gear - Part 2: Particular requirements - Section 13: d.c. or a.c. supplied electronic control gear for LED modules",
+      "scope": "Particular safety requirements for electronic control gear (LED drivers) supplied from a.c. or d.c. for use with LED modules.",
+      "keywords": ["LED driver", "control gear", "power supply", "driver"],
+      "superseded_editions": [],
+      "amendments": []
+    },
+    {
+      "id": "IS-16105", "number": "IS 16105", "year": 2012, "domain": "led_street_lighting", "category": "test_method",
+      "title": "Method of measurement of lumen maintenance of solid state light (LED) sources",
+      "scope": "Method for measuring lumen depreciation of LED packages, arrays and modules over operating time.",
+      "keywords": ["lumen maintenance", "LM-80", "lumen depreciation", "LED life"],
+      "superseded_editions": [],
+      "amendments": []
+    },
+    {
+      "id": "IS-16106", "number": "IS 16106", "year": 2012, "domain": "led_street_lighting", "category": "test_method",
+      "title": "Method of electrical and photometric measurements of solid-state lighting (LED) products",
+      "scope": "Methods for measuring electrical power, luminous flux, efficacy, colour characteristics and light distribution of LED lamps and luminaires.",
+      "keywords": ["photometry", "efficacy", "lumen per watt", "luminous flux", "LM-79", "CCT", "CRI"],
+      "superseded_editions": [],
+      "amendments": []
+    },
+    {
+      "id": "IS-16101", "number": "IS 16101", "year": 2012, "domain": "led_street_lighting", "category": "terminology",
+      "title": "General lighting - LEDs and LED modules - Terms and definitions",
+      "scope": "Terms and definitions for LEDs and LED modules used in general lighting.",
+      "keywords": ["LED terms", "definitions", "vocabulary"],
+      "superseded_editions": [],
+      "amendments": []
+    },
+    {
+      "id": "IS-IEC-60529", "number": "IS/IEC 60529", "year": 2001, "domain": "led_street_lighting", "category": "test_method",
+      "title": "Degrees of protection provided by enclosures (IP code)",
+      "scope": "Classification and tests for degrees of protection of electrical enclosures against ingress of solid objects, dust and water (IP ratings such as IP65, IP66).",
+      "keywords": ["IP65", "IP66", "IP rating", "ingress protection", "dust proof", "water proof"],
+      "superseded_editions": [],
+      "amendments": []
+    },
+    {
+      "id": "IS-1944-P1-2", "number": "IS 1944 (Parts 1 and 2)", "year": 1970, "domain": "led_street_lighting", "category": "installation",
+      "title": "Code of practice for lighting of public thoroughfares - Parts 1 and 2",
+      "scope": "Practice for the lighting of roads and public thoroughfares, covering lighting levels, uniformity, mounting height, spacing and arrangement of luminaires.",
+      "keywords": ["road lighting design", "illuminance", "pole spacing", "mounting height", "lux level"],
+      "superseded_editions": [],
+      "amendments": []
+    },
+
+    {
+      "id": "IS-1417", "number": "IS 1417", "year": 2016, "domain": "gold_jewellery", "category": "product",
+      "title": "Grades of gold and gold alloys, jewellery/artefacts - Fineness and marking",
+      "scope": "Grades (fineness) of gold and gold alloys used for jewellery and artefacts, such as 14K, 18K, 22K and higher, and requirements for their marking.",
+      "keywords": ["gold jewellery", "gold artefact", "22 carat", "22K", "18K", "fineness", "hallmark", "gold ornaments", "gold coin"],
+      "superseded_editions": [1999],
+      "amendments": []
+    },
+    {
+      "id": "IS-1418", "number": "IS 1418", "year": 2009, "domain": "gold_jewellery", "category": "test_method",
+      "title": "Assaying of gold in gold bullion, gold alloys, gold jewellery/artefacts - Cupellation (fire assay) method",
+      "scope": "Fire assay (cupellation) method for determining the gold content of bullion, alloys, jewellery and artefacts.",
+      "keywords": ["fire assay", "cupellation", "gold purity test", "assaying"],
+      "superseded_editions": [1999],
+      "amendments": []
+    },
+    {
+      "id": "IS-15820", "number": "IS 15820", "year": 2009, "domain": "gold_jewellery", "category": "test_method",
+      "title": "Determination of gold in gold bullion, gold alloys and gold jewellery/artefacts - X-ray fluorescence (XRF) method",
+      "scope": "Non-destructive X-ray fluorescence method for estimating the gold content of bullion, alloys, jewellery and artefacts.",
+      "keywords": ["XRF", "non destructive test", "gold testing"],
+      "superseded_editions": [],
+      "amendments": []
+    },
+
+    {
+      "id": "IS-12701", "number": "IS 12701", "year": 1996, "domain": "water_storage_pipes", "category": "product",
+      "title": "Rotational moulded polyethylene water storage tanks - Specification",
+      "scope": "Requirements for rotationally moulded polyethylene tanks for storage of potable water, covering material, capacity, wall thickness, colour, opacity and tests.",
+      "keywords": ["water tank", "overhead tank", "plastic tank", "PE tank", "storage tank", "sintex", "loft tank", "1000 litre"],
+      "superseded_editions": [],
+      "amendments": []
+    },
+    {
+      "id": "IS-10146", "number": "IS 10146", "year": 1982, "domain": "water_storage_pipes", "category": "normative",
+      "title": "Polyethylene for its safe use in contact with foodstuff, pharmaceuticals and drinking water - Specification",
+      "scope": "Requirements for polyethylene materials intended to be in contact with food, pharmaceuticals and drinking water, including limits on additives and migration.",
+      "keywords": ["food grade polyethylene", "potable water contact", "food contact"],
+      "superseded_editions": [],
+      "amendments": []
+    },
+    {
+      "id": "IS-9845", "number": "IS 9845", "year": 1998, "domain": "water_storage_pipes", "category": "test_method",
+      "title": "Determination of overall migration of constituents of plastics materials and articles intended to come in contact with foodstuffs - Method of analysis",
+      "scope": "Method for determining the overall migration of constituents from plastic materials and articles into food simulants.",
+      "keywords": ["migration test", "food contact test", "plastic safety"],
+      "superseded_editions": [],
+      "amendments": []
+    },
+    {
+      "id": "IS-10500", "number": "IS 10500", "year": 2012, "domain": "water_storage_pipes", "category": "normative",
+      "title": "Drinking water - Specification",
+      "scope": "Acceptable and permissible limits for physical, chemical and bacteriological parameters of drinking water.",
+      "keywords": ["drinking water quality", "potable water", "water quality"],
+      "superseded_editions": [1991],
+      "amendments": []
+    },
+    {
+      "id": "IS-4985", "number": "IS 4985", "year": 2021, "domain": "water_storage_pipes", "category": "product",
+      "title": "Unplasticized PVC pipes for water supplies - Specification",
+      "scope": "Requirements for unplasticized PVC (uPVC) pipes used for cold potable water supply, covering pressure classes, dimensions, material and tests.",
+      "keywords": ["PVC pipe", "uPVC pipe", "water pipe", "water supply pipe", "pressure pipe", "pipeline", "drinking water pipe"],
+      "superseded_editions": [2000, 1988],
+      "amendments": []
+    },
+    {
+      "id": "IS-12235", "number": "IS 12235 (all parts)", "year": null, "domain": "water_storage_pipes", "category": "test_method",
+      "title": "Thermoplastics pipes and fittings - Methods of test",
+      "scope": "Series of test methods for thermoplastic pipes and fittings covering dimensions, hydrostatic pressure, impact strength, reversion and other properties.",
+      "keywords": ["pipe test", "hydrostatic test", "impact test", "pressure test"],
+      "superseded_editions": [],
+      "amendments": []
+    },
+    {
+      "id": "IS-7634-P3", "number": "IS 7634 (Part 3)", "year": 2003, "domain": "water_storage_pipes", "category": "installation",
+      "title": "Plastics pipe selection, handling, storage and installation for potable water supplies - Code of practice - Part 3: Laying and jointing of UPVC pipes",
+      "scope": "Practice for laying, jointing and testing of unplasticized PVC pipelines for potable water supply.",
+      "keywords": ["pipe laying", "pipe jointing", "solvent cement", "pipeline installation"],
+      "superseded_editions": [1975],
+      "amendments": []
+    }
+  ]
+}

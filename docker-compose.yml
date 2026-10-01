@@ -1,0 +1,42 @@
+# Start:   docker compose up -d --build        then open http://localhost:8000
+# Logs:    docker compose logs -f app           (live)  ·  ./logs/server.jsonl  (stored, JSON lines)
+# Report:  docker compose exec app python -m app.log_report
+# Tests:   docker compose run --rm app python -m pytest -q
+# Stop:    docker compose down
+name: is-recommendation-engine
+
+services:
+  app:
+    build:
+      context: .
+      args:
+        INSTALL_ML: ${INSTALL_ML:-false}
+        PIP_INDEX_URL: ${PIP_INDEX_URL:-https://pypi.org/simple}
+    image: is-recommendation-engine:latest
+    container_name: is-recommendation-engine
+    ports:
+      - "${PORT:-8000}:8000"
+    environment:
+      ISRE_DENSE: ${ISRE_DENSE:-auto}
+      ISRE_EMBED_MODEL: ${ISRE_EMBED_MODEL:-BAAI/bge-m3}
+      ISRE_RERANK_MODEL: ${ISRE_RERANK_MODEL:-}
+      ISRE_OLLAMA_MODEL: ${ISRE_OLLAMA_MODEL:-}
+      ISRE_OLLAMA_URL: ${ISRE_OLLAMA_URL:-http://host.docker.internal:11434}
+      ISRE_ABSTAIN_THRESHOLD: ${ISRE_ABSTAIN_THRESHOLD:-0.30}
+      ISRE_LOG_LEVEL: ${ISRE_LOG_LEVEL:-INFO}
+      ISRE_LOG_RETENTION_DAYS: ${ISRE_LOG_RETENTION_DAYS:-30}
+    volumes:
+      - ./logs:/data/logs             # server logs, kept on the host for analysis
+      - ./backend/var:/data/var       # audit log + uploaded documents
+      - models:/data/models           # Hugging Face model cache (only used with INSTALL_ML=true)
+    extra_hosts:
+      - "host.docker.internal:host-gateway"   # lets Linux reach an Ollama server on the host
+    restart: unless-stopped
+    logging:                          # cap Docker's own copy of stdout
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "5"
+
+volumes:
+  models:

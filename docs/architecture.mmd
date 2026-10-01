@@ -1,0 +1,130 @@
+---
+title: AI-Powered Indian Standards Recommendation Engine — System Architecture (SIH PS 26108)
+---
+flowchart TB
+
+  %% ═════════════ USERS & INPUT CHANNELS ═════════════
+  subgraph U["👤 USERS & INPUT CHANNELS"]
+    direction LR
+    U1["<b>Procurement Official</b><br/>Web app · React + TypeScript"]
+    I1["<b>① Natural-language query</b><br/>English / Hindi / regional"]
+    I2["<b>② Specification text</b><br/>draft spec paragraph"]
+    I3["<b>③ Tender document</b><br/>PDF · DOCX · TXT"]
+    U2["<b>Procurement Portal</b><br/>REST API · FastAPI + OpenAPI 3"]
+    U1 --> I1 & I2
+    U2 --> I3
+  end
+
+  %% ═════════════ STAGE 1 · INGEST ═════════════
+  subgraph S1["1 · INGEST"]
+    direction LR
+    A0{"<b>Input router</b><br/>① ② text → Stage 2"}
+    A1["<b>Document store</b><br/>SHA-256 hash + provenance"]
+    A2["<b>Text extraction</b><br/>PyMuPDF · python-docx"]
+    A3["<b>OCR · scanned pages</b><br/>PaddleOCR · optional"]
+    A0 -- "③ document" --> A1 --> A2 -. "no text layer" .-> A3
+  end
+
+  %% ═════════════ STAGE 2 · UNDERSTAND ═════════════
+  subgraph S2["2 · UNDERSTAND"]
+    direction LR
+    B1["<b>Spec-item splitter</b><br/>1 tender → N items"]
+    B2["<b>Language detection</b><br/>Hindi + 8 Indic scripts"]
+    B3["<b>Attribute extraction</b><br/>materials · grades · quantities<br/>rules · Qwen2.5 optional"]
+    B1 --> B2 --> B3
+  end
+
+  %% ═════════════ STAGE 3 · RETRIEVE ═════════════
+  subgraph S3["3 · RETRIEVE"]
+    direction LR
+    C1["<b>Lexical search</b><br/>BM25 + Hindi glossary"]
+    C2["<b>Exact IS citation</b><br/>regex parser"]
+    C3["<b>Semantic search</b><br/>BGE-M3 · optional"]
+    C4["<b>Fusion + rerank</b><br/>RRF · bge-reranker optional"]
+    C5{"<b>Confident?</b>"}
+    C6["<b>Abstain</b><br/>No applicable IS"]
+    C1 & C2 & C3 --> C4 --> C5
+    C5 -- "No" --> C6
+  end
+
+  %% ═════════════ STAGE 4 · EXPAND & ANNOTATE ═════════════
+  subgraph S4["4 · EXPAND & ANNOTATE"]
+    direction LR
+    D1["<b>Allied-standards graph</b><br/>6 typed relations"]
+    D2["<b>Version resolver</b><br/>current edition · outdated flag"]
+    D3["<b>Certification suggestion</b><br/>ISI Mark · CRS · Hallmarking"]
+    D4["<b>Tender Health Check</b><br/>missing · outdated · incomplete"]
+    D1 --> D2 --> D3 --> D4
+  end
+
+  %% ═════════════ STAGE 5 · REVIEW & DELIVER ═════════════
+  subgraph S5["5 · REVIEW & DELIVER"]
+    direction LR
+    E1["<b>Recommendation card</b><br/>evidence · as-of date"]
+    E2["<b>Tender clause</b><br/>English / Hindi"]
+    E3["<b>Health-check report</b><br/>Acceptable / Partial / Not"]
+    E4["<b>Official review</b><br/>Accept / Reject"]
+    E5[("<b>Audit log</b><br/>hash-chained")]
+    E1 --> E2 --> E3 --> E4 --> E5
+  end
+
+  %% ═════════════ FOUNDATION ═════════════
+  subgraph F["🗄️ FOUNDATION"]
+    direction LR
+    subgraph KB["📚 KNOWLEDGE BASE · as-of dated"]
+      direction LR
+      K1[("<b>IS registry</b>")]
+      K2[("<b>Allied edges</b>")]
+      K3[("<b>Certification rules</b><br/>YAML")]
+      K4[("<b>Glossary</b><br/>Hindi → English")]
+      K1 ~~~ K2 ~~~ K3 ~~~ K4
+    end
+    subgraph EV["📊 EVALUATION"]
+      direction LR
+      V1["<b>Golden set</b><br/>EN + HI queries"]
+      V2["<b>Metrics</b><br/>Recall@5 · MRR"]
+      V1 --> V2
+    end
+    KB ~~~ EV
+  end
+
+  %% ═════════════ MAIN FLOW (single vertical spine) ═════════════
+  U  == "① ② text · ③ documents" ==> S1
+  S1 == "text + source spans" ==> S2
+  S2 == "items + attributes" ==> S3
+  S3 == "confident matches" ==> S4
+  S4 == "annotated results" ==> S5
+  S5 == "feedback · audit" ==> F
+
+  %% ═════════════ STYLES ═════════════
+  classDef user  fill:#f1f5f9,stroke:#64748b,color:#0f172a
+  classDef input fill:#e0f2fe,stroke:#0284c7,color:#0c4a6e
+  classDef s1    fill:#eff6ff,stroke:#2563eb,color:#1e3a8a
+  classDef s2    fill:#f5f3ff,stroke:#7c3aed,color:#3b0764
+  classDef s3    fill:#ecfeff,stroke:#0891b2,color:#164e63
+  classDef s4    fill:#f0fdf4,stroke:#16a34a,color:#14532d
+  classDef s5    fill:#fff7ed,stroke:#ea580c,color:#7c2d12
+  classDef kb    fill:#fefce8,stroke:#ca8a04,color:#713f12
+  classDef ev    fill:#fdf2f8,stroke:#be185d,color:#831843
+  classDef stop  fill:#fee2e2,stroke:#b91c1c,color:#7f1d1d
+
+  class U1,U2 user
+  class I1,I2,I3 input
+  class A0,A1,A2,A3 s1
+  class B1,B2,B3 s2
+  class C1,C2,C3,C4,C5 s3
+  class C6 stop
+  class D1,D2,D3,D4 s4
+  class E1,E2,E3,E4,E5 s5
+  class K1,K2,K3,K4 kb
+  class V1,V2 ev
+
+  style U  fill:#f8fafc,stroke:#94a3b8,stroke-width:2px
+  style S1 fill:#f8fbff,stroke:#2563eb,stroke-width:2px
+  style S2 fill:#fbfaff,stroke:#7c3aed,stroke-width:2px
+  style S3 fill:#f7feff,stroke:#0891b2,stroke-width:2px
+  style S4 fill:#f7fef9,stroke:#16a34a,stroke-width:2px
+  style S5 fill:#fffbf6,stroke:#ea580c,stroke-width:2px
+  style F  fill:#ffffff,stroke:#475569,stroke-width:2px,stroke-dasharray:6 4
+  style KB fill:#fffef3,stroke:#ca8a04,stroke-width:2px
+  style EV fill:#fff7fb,stroke:#be185d,stroke-width:2px

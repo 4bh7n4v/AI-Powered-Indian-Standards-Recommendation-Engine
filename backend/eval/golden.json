@@ -1,0 +1,33 @@
+{
+  "meta": {"note": "Queries written by the team; expected answers taken from the seed registry. Extend with 30-50 queries per domain labelled from verified BIS data."},
+  "queries": [
+    {"q": "TMT reinforcement bars Fe 500D", "expected": ["IS-1786"]},
+    {"q": "HYSD rebars for RCC slab", "expected": ["IS-1786"]},
+    {"q": "सरिया Fe 500D भवन निर्माण के लिए", "expected": ["IS-1786"]},
+    {"q": "structural steel angles and channels E250", "expected": ["IS-2062"]},
+    {"q": "MS plates for fabrication of steel structure", "expected": ["IS-2062"]},
+    {"q": "PVC insulated copper house wire 1.5 sq mm", "expected": ["IS-694"]},
+    {"q": "FR flexible wire for domestic wiring", "expected": ["IS-694"]},
+    {"q": "बिजली के तार घरेलू वायरिंग के लिए", "expected": ["IS-694"]},
+    {"q": "armoured PVC power cable 1.1 kV copper", "expected": ["IS-1554-P1"]},
+    {"q": "XLPE aluminium armoured LT cable", "expected": ["IS-7098-P1"]},
+    {"q": "LED street light 120 W", "expected": ["IS-10322-P5-S3"]},
+    {"q": "road lighting luminaire with LED", "expected": ["IS-10322-P5-S3"]},
+    {"q": "सड़क के लिए एलईडी स्ट्रीट लाइट", "expected": ["IS-10322-P5-S3"]},
+    {"q": "LED driver for street light", "expected": ["IS-15885-P2-S13"]},
+    {"q": "22 carat gold jewellery", "expected": ["IS-1417"]},
+    {"q": "सोने के आभूषण 22 कैरेट", "expected": ["IS-1417"]},
+    {"q": "fire assay of gold", "expected": ["IS-1418"]},
+    {"q": "1000 litre plastic water tank for rooftop", "expected": ["IS-12701"]},
+    {"q": "पानी की टंकी 1000 लीटर", "expected": ["IS-12701"]},
+    {"q": "uPVC pipes for drinking water supply", "expected": ["IS-4985"]},
+    {"q": "पीने के पानी के लिए पीवीसी पाइप", "expected": ["IS-4985"]},
+    {"q": "tensile test for steel", "expected": ["IS-1608-P1"]},
+    {"q": "code of practice for laying power cables", "expected": ["IS-1255"]},
+    {"q": "IP66 ingress protection test", "expected": ["IS-IEC-60529"]},
+    {"q": "housekeeping services for office", "expected": []},
+    {"q": "catering services for hostel mess", "expected": []},
+    {"q": "office chairs with armrest", "expected": []},
+    {"q": "laptop computers 16 GB RAM", "expected": []}
+  ]
+}

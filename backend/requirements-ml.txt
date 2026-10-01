@@ -1,0 +1,6 @@
+# Optional: semantic retrieval with BGE-M3 and a cross-encoder reranker.
+# Downloads PyTorch (CPU) and about 2.5 GB of model weights on first run.
+--extra-index-url https://download.pytorch.org/whl/cpu
+torch
+sentence-transformers>=3.0
+numpy

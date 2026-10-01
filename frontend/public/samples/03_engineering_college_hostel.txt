@@ -1,0 +1,13 @@
+SAMPLE TENDER 03 - TECHNICAL SPECIFICATIONS (demonstration only)
+Expected result: NOT ACCEPTABLE - outdated editions, standards missing altogether, an unknown IS number and no certification clauses.
+Construction of Boys Hostel, State Engineering College
+
+1. Reinforcement steel: TMT bars Fe 500, 10 mm to 25 mm, conforming to IS 1786:1985.
+
+2. Structural steel: Hot rolled MS angles, channels and plates, grade E250, conforming to IS 2062:1999.
+
+3. Street lighting: LED street light luminaire 120 W, IP66, pressure die-cast aluminium housing, efficacy not less than 110 lm/W, 5 year warranty.
+
+4. Electrical wiring: FR PVC insulated copper house wire, 2.5 sq mm, as per IS 694:1990.
+
+5. Gold medals: 22 carat gold jewellery items for the annual award ceremony, 10 grams each, conforming to IS 99999.

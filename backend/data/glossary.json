@@ -1,0 +1,12 @@
+{
+  "meta": {"notice": "Hindi / Hinglish procurement terms mapped to English search terms. Used by the lexical retriever; the dense BGE-M3 retriever does not need it."},
+  "terms": {
+    "बिजली": "electrical", "तार": "wire cable", "केबल": "cable", "वायरिंग": "wiring",
+    "सरिया": "reinforcement bar TMT", "सरिये": "reinforcement bar TMT", "छड़": "bar", "इस्पात": "steel", "स्टील": "steel", "लोहा": "steel iron",
+    "सोना": "gold", "सोने": "gold", "आभूषण": "jewellery", "गहने": "jewellery", "जेवर": "jewellery", "कैरेट": "carat",
+    "पानी": "water", "पेयजल": "drinking water", "टंकी": "tank", "टैंक": "tank", "पाइप": "pipe", "पाइपलाइन": "pipeline",
+    "स्ट्रीट": "street", "सड़क": "road street", "लाइट": "light", "बत्ती": "light", "एलईडी": "LED", "प्रकाश": "lighting",
+    "पीवीसी": "PVC", "प्लास्टिक": "plastic", "भवन": "building", "निर्माण": "construction",
+    "sariya": "reinforcement bar TMT", "taar": "wire", "bijli": "electrical", "tanki": "tank", "sona": "gold"
+  }
+}

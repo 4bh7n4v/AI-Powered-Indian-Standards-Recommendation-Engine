@@ -1,0 +1,12 @@
+backend/.venv/
+backend/.venv-win/
+backend/var/
+backend/data/cache/
+logs/*
+!logs/.gitkeep
+.env
+**/__pycache__/
+.pytest_cache/
+frontend/node_modules/
+frontend/dist/
+frontend/tsconfig.tsbuildinfo

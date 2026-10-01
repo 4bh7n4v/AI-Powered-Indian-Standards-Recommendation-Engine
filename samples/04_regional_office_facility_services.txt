@@ -1,0 +1,11 @@
+SAMPLE TENDER 04 - SCOPE OF WORK (demonstration only)
+Expected result: NO INDIAN STANDARD APPLIES - services and items outside the registry. The engine should abstain, not guess.
+Facility Management Services, Regional Office
+
+1. Housekeeping services: Daily cleaning of the office premises for 12 months with 8 staff.
+
+2. Security services: Round-the-clock security guards, 3 shifts, for 12 months.
+
+3. Catering services: Breakfast and lunch for the office canteen for 250 employees.
+
+4. Annual maintenance contract for air conditioners installed in the building.
