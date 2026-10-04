@@ -12,6 +12,18 @@ This is a baseline prototype. A procurement official describes a product, or upl
 
 It also runs a **Tender Health Check**: for every item in an uploaded tender it flags missing standards, outdated editions, missing test-method or safety standards, and certification the item does not ask for.
 
+**What the web app shows**
+
+| Tab | What it does |
+|---|---|
+| Dashboard (home) | Checks run, items checked, issues found, officer accept rate; tender and item verdicts by status; standards most often missing or outdated; recent checks. An empty install offers **Load demo checks**, which runs the bundled samples. |
+| Check a Tender | Upload a PDF, Word, PowerPoint, text or HTML file, or paste a **link**. The verdict comes first ("2 of 5 items compliant"). Each item opens to its **evidence**: a snapshot of the PDF page with cited IS numbers highlighted (green = fine, red = flagged, yellow = matched words), or the same highlights on a text excerpt for other formats. Findings for things the tender lacks are labelled **Expected, not found**, and every fix has a **Copy** button. |
+| Find Standards | Describe a product; ranked standards with match strength in words (raw score on hover), edition, certification, related standards and a tender clause. "No confident match" is shown as its own state. |
+| Past Checks | Every tender check and search from the audit log, filterable; **Open** shows the saved result again. |
+| Standards Registry, Portal Integration | Unchanged: the 37 seeded standards, and the REST API. |
+
+Every status uses a colour **and** an icon **and** a word, so results stay readable on a projector and for colour-blind viewers.
+
 ![Architecture](docs/architecture.png)
 
 ## Quick start (Docker: Linux, Windows, macOS)
@@ -38,7 +50,7 @@ Then open <http://localhost:8000>. The interactive API documentation is at <http
 | Host folder | Contents |
 |---|---|
 | `logs/` | `server.jsonl`: one JSON object per log line (every API request with method, path, status, latency, client and request ID; uploads with file name, size and result; warnings and errors with tracebacks). It rotates daily (`server.jsonl.YYYY-MM-DD`) and keeps 30 days by default (`ISRE_LOG_RETENTION_DAYS`). Every response carries an `X-Request-ID` header that matches its log line. |
-| `backend/var/` | Hash-chained audit log (`audit.jsonl`) and uploaded documents |
+| `backend/var/` | Hash-chained audit log (`audit.jsonl`), uploaded documents, saved results (`results/`, for Past Checks) and page snapshots (`snapshots/`) |
 
 The JSON-lines format loads directly into pandas (`pd.read_json("logs/server.jsonl", lines=True)`), `jq`, Elastic or Loki.
 
@@ -61,16 +73,19 @@ The JSON-lines format loads directly into pandas (`pd.read_json("logs/server.jso
 | `04_regional_office_facility_services` | Facility Management Services, Regional Office (services only) | No Indian Standard applies |
 | `05_government_school_building` | Government School Building (Hindi tender) | Partially acceptable |
 | `06_engineering_college_hostel_scanned` | Scanned copy of 03 (PDF, no text layer) | Could not read document (OCR needed) |
+| `07_district_hospital_presentation` | Tender 02 as a PowerPoint deck (PPTX) | Partially acceptable |
+
+To try link input without internet, use a sample the app itself serves, e.g. `http://localhost:8000/samples/03_engineering_college_hostel.pdf` (the **Try a sample link** button does this).
 
 ## How the code maps to the architecture
 
 | Stage | Module | What it does in this baseline |
 |---|---|---|
-| 1 · Ingest | `backend/app/pipeline/ingest.py` | Stores each upload by SHA-256. Extracts text with PyMuPDF (PDF) or python-docx (DOCX, tables included). Detects scanned pages and runs PaddleOCR on them if it is installed. |
+| 1 · Ingest | `backend/app/pipeline/ingest.py`, `evidence.py` | Stores each upload by SHA-256. Extracts text with PyMuPDF (PDF), python-docx (DOCX, tables included), python-pptx (PPTX) or the stdlib HTML parser (web pages); downloads links with httpx. Detects scanned pages and runs PaddleOCR on them if it is installed. `evidence.py` crops each tender item from the PDF page and highlights its IS citations. |
 | 2 · Understand | `backend/app/pipeline/understand.py` | Splits a tender into numbered items and keeps their line ranges. Detects the script for Hindi and 8 other Indian languages. Extracts attributes (materials, grades, quantities) with rules, or with Qwen2.5 via Ollama when it is configured. |
 | 3 · Retrieve | `backend/app/pipeline/retrieve.py` | BM25 with a Hindi/Hinglish glossary, plus exact IS-number matching. **BGE-M3** dense retrieval switches on when it is installed. Results are fused with Reciprocal Rank Fusion; a bge-reranker cross-encoder is optional. The engine abstains below a confidence threshold. |
 | 4 · Expand & Annotate | `backend/app/pipeline/expand.py` | Expands allied standards over typed graph edges, resolves versions, suggests certification from the YAML rule pack, and runs the tender health check. |
-| 5 · Review & Deliver | `backend/app/pipeline/deliver.py`, `backend/app/audit.py` | Builds tender clauses in English and Hindi. Records accept/reject decisions in a hash-chained, append-only audit log. |
+| 5 · Review & Deliver | `backend/app/pipeline/deliver.py`, `backend/app/audit.py`, `backend/app/history.py` | Builds tender clauses in English and Hindi. Records accept/reject decisions in a hash-chained, append-only audit log. `history.py` reads that log for the dashboard and Past Checks, and saves each full result so it can be reopened. |
 | Knowledge base | `backend/data/` | `standards.json` (registry), `edges.json` (allied graph), `certification_rules.yaml` (rule pack), `glossary.json` |
 | Portal API | `backend/app/main.py` | FastAPI + OpenAPI 3 |
 | Web app | `frontend/` | React + TypeScript (Vite) |
@@ -80,7 +95,12 @@ The JSON-lines format loads directly into pandas (`pd.read_json("logs/server.jso
 | Method | Endpoint | Purpose |
 |---|---|---|
 | POST | `/api/recommend` | `{"query": "...", "top_k": 5, "output_language": "en" \| "hi"}` |
-| POST | `/api/tender/analyse` | multipart `file` (PDF / DOCX / TXT, max 10 MB), `?output_language=` |
+| POST | `/api/tender/analyse` | multipart `file` (PDF / DOCX / PPTX / TXT / HTML, max 10 MB), `?output_language=` |
+| POST | `/api/tender/analyse-url` | `{"url": "...", "output_language": "en"}`: downloads the link (PDF, Word, PowerPoint or web page) and runs the same check |
+| GET | `/api/stats` | Dashboard numbers read from the audit log |
+| GET | `/api/history` | Past checks (`?kind=tender\|search`, `?limit=`); `/api/history/{id}` returns the saved result |
+| GET | `/api/snapshots/{name}` | Page snapshot PNG referenced by `items[].evidence.image` |
+| POST | `/api/demo/seed` | Runs the bundled sample tenders and example searches (fills the dashboard for a demo) |
 | GET | `/api/standards` | Registry listing, filters `domain` and `category` |
 | GET | `/api/standards/{id}` | One standard with its version and certification |
 | GET | `/api/standards/{id}/allied` | Allied standards grouped by type |

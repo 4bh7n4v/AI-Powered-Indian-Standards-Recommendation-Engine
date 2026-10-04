@@ -10,23 +10,22 @@ export default function Header({ health, lang, onLang }: Props) {
   return (
     <header className="header">
       <div className="container header-inner">
-        <div>
-          <p className="eyebrow">Smart India Hackathon · Problem Statement 26108</p>
-          <h1>Indian Standards Recommendation Engine</h1>
-          <p className="subtitle">Identify applicable Indian Standards, allied standards and certification requirements for procurement specifications</p>
+        <div className="brand">
+          <span className="brand-mark" aria-hidden="true">IS</span>
+          <div>
+            <h1>Indian Standards Recommendation Engine</h1>
+            <p className="subtitle">Check procurement specifications against Indian Standards · SIH PS 26108</p>
+          </div>
         </div>
         <div className="header-side">
-          <label className="lang-select">
-            <span>Output language</span>
-            <select value={lang} onChange={(e) => onLang(e.target.value as "en" | "hi")}>
-              <option value="en">English</option>
-              <option value="hi">हिन्दी (Hindi)</option>
-            </select>
-          </label>
-          <div className={health ? "status ok" : "status down"} title={health?.dense ?? ""}>
-            <span className="dot" />
-            {health ? `Engine online · ${health.standards} standards · data as of ${health.data_as_of}` : "Engine offline"}
+          <div className="segmented" role="group" aria-label="Language of generated clauses">
+            <button className={lang === "en" ? "on" : ""} onClick={() => onLang("en")} title="Clauses in English">EN</button>
+            <button className={lang === "hi" ? "on" : ""} onClick={() => onLang("hi")} title="Clauses in Hindi">हिन्दी</button>
           </div>
+          <span className={health ? "status ok" : "status down"} title={health ? `Retrieval: ${health.retrieval_mode} · ${health.dense}` : ""}>
+            <span className="dot" />
+            {health ? `Online · ${health.standards} standards` : "Engine offline"}
+          </span>
         </div>
       </div>
     </header>

@@ -2,10 +2,10 @@
 from dataclasses import asdict
 from functools import lru_cache
 
-from . import audit
+from . import audit, history
 from .citations import find_citations
 from .knowledge import KnowledgeBase, load_kb
-from .pipeline import expand
+from .pipeline import evidence, expand
 from .pipeline.deliver import tender_clause
 from .pipeline.ingest import ingest
 from .pipeline.retrieve import Retriever
@@ -46,7 +46,7 @@ class Engine:
         request_id = audit.record("recommend", {
             "query": query[:500], "language": lang,
             "results": [r["standard"]["label"] for r in results], "abstained": res.abstained})
-        return {
+        response = {
             "request_id": request_id,
             "query": query,
             "detected_language": {"code": lang, "name": LANG_NAMES.get(lang, lang)},
@@ -58,8 +58,10 @@ class Engine:
             "results": results,
             "data_as_of": self.kb.meta["as_of"],
         }
+        history.save(response)
+        return response
 
-    def analyse_tender(self, name: str, data: bytes, output_language: str = "en") -> dict:
+    def analyse_tender(self, name: str, data: bytes, output_language: str = "en", source: str = "upload") -> dict:
         doc = ingest(name, data)
         items = []
         for it in split_items(doc.text):
@@ -77,6 +79,7 @@ class Engine:
                 "attributes": asdict(extract_attributes(it.text)),
                 "primary_standard": expand.summary(self.kb, primary) if primary else None,
                 "confidence": res.hits[0].confidence if res.hits else 0.0,
+                "matched_terms": res.hits[0].matched_terms if res.hits else [],
                 "abstained": res.abstained,
                 "status": status,
                 "status_label": expand.ITEM_STATUS[status],
@@ -84,24 +87,36 @@ class Engine:
                 "suggested_clause": tender_clause(self.kb, primary, expand.allied(self.kb, primary["id"]),
                                                   output_language) if primary else None,
             })
+        snapshots = evidence.pdf_snapshots(doc.sha256, items) if doc.kind == "pdf" else {}
         counts = {"high": 0, "medium": 0, "low": 0, "info": 0}
+        gaps = []
         for it in items:
+            it["evidence"] = snapshots.get(it["index"])
             for f in it["findings"]:
                 counts[f["severity"]] += 1
-        request_id = audit.record("tender_analyse", {"document": doc.name, "sha256": doc.sha256,
-                                                     "items": len(items), "findings": counts})
-        return {
+                if f["kind"] in ("missing", "outdated") and (rec := self.kb.get(f.get("standard_id", ""))):
+                    gaps.append(self.kb.label(rec))
+        ts = expand.tender_status([i["status"] for i in items], readable=bool(doc.text.strip()))
+        by_status = {k: sum(1 for i in items if i["status"] == k) for k in expand.ITEM_STATUS}
+        request_id = audit.record("tender_analyse", {
+            "document": doc.name, "sha256": doc.sha256, "source": source, "items": len(items), "findings": counts,
+            "status": ts, "status_label": expand.TENDER_STATUS[ts], "items_by_status": by_status,
+            "standards": [i["primary_standard"]["label"] for i in items if i["primary_standard"]], "gaps": gaps})
+        response = {
             "request_id": request_id,
             "document": {"name": doc.name, "sha256": doc.sha256, "type": doc.kind, "pages": doc.pages,
-                         "characters": len(doc.text), "ocr_pages": doc.ocr_pages, "warnings": doc.warnings},
+                         "characters": len(doc.text), "ocr_pages": doc.ocr_pages, "warnings": doc.warnings,
+                         "source": source},
             "summary": {"items": len(items), "findings": counts,
-                        "status": (ts := expand.tender_status([i["status"] for i in items], readable=bool(doc.text.strip()))),
+                        "status": ts,
                         "status_label": expand.TENDER_STATUS[ts],
-                        "items_by_status": {k: sum(1 for i in items if i["status"] == k) for k in expand.ITEM_STATUS},
+                        "items_by_status": by_status,
                         "items_without_standard": sum(1 for i in items if i["abstained"])},
             "items": items,
             "data_as_of": self.kb.meta["as_of"],
         }
+        history.save(response)
+        return response
 
 
 @lru_cache(maxsize=1)

@@ -1,4 +1,4 @@
-"""Build .docx and .pdf versions of every sample tender, plus a scanned (image-only) PDF."""
+"""Build .docx and .pdf versions of every sample tender, a scanned (image-only) PDF and a .pptx deck."""
 import shutil
 from pathlib import Path
 
@@ -37,6 +37,26 @@ def write_scanned(source: Path, path: Path) -> None:
     out.save(path)
 
 
+def write_pptx(source: Path, path: Path) -> None:
+    """A slide deck version of a tender: a title slide, then one slide per numbered item."""
+    from pptx import Presentation
+    from pptx.util import Pt
+
+    lines = [l for l in source.read_text(encoding="utf-8").splitlines() if l.strip()]
+    items = [l for l in lines if l[:1].isdigit()]
+    prs = Presentation()
+    title = prs.slides.add_slide(prs.slide_layouts[0])
+    title.shapes.title.text = lines[2]
+    title.placeholders[1].text = "Technical specifications (demonstration only)"
+    for item in items:
+        slide = prs.slides.add_slide(prs.slide_layouts[6])  # blank: a slide title would leak into the item text
+        box = slide.shapes.add_textbox(Pt(40), Pt(60), Pt(640), Pt(400)).text_frame
+        box.word_wrap = True
+        box.text = item  # keep the "1. ..." numbering so items split the same way
+        box.paragraphs[0].runs[0].font.size = Pt(20)
+    prs.save(path)
+
+
 def main() -> None:
     PUBLIC.mkdir(parents=True, exist_ok=True)
     for txt in sorted(HERE.glob("*.txt")):
@@ -47,6 +67,7 @@ def main() -> None:
         d.save(txt.with_suffix(".docx"))
         write_pdf(lines, txt.with_suffix(".pdf"))
     write_scanned(HERE / "03_engineering_college_hostel.pdf", HERE / "06_engineering_college_hostel_scanned.pdf")
+    write_pptx(HERE / "02_district_hospital_electrification.txt", HERE / "07_district_hospital_presentation.pptx")
     for old in PUBLIC.glob("*"):
         old.unlink()
     for f in HERE.glob("0*.*"):

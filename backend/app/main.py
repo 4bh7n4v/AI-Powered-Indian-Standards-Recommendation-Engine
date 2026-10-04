@@ -1,5 +1,6 @@
 """FastAPI application: REST API for procurement portals + the web app."""
 import logging
+import re
 import time
 import uuid
 from typing import Literal
@@ -10,18 +11,19 @@ from fastapi.responses import FileResponse, JSONResponse
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel, Field
 
-from . import audit, logs
-from .config import FRONTEND_DIST, MAX_UPLOAD_BYTES
+from . import audit, history, logs
+from .config import FRONTEND_DIST, MAX_UPLOAD_BYTES, SAMPLES_DIR
 from .engine import get_engine
-from .pipeline import expand
-from .pipeline.ingest import UnsupportedDocument
+from .pipeline import evidence, expand
+from .pipeline.ingest import FetchError, UnsupportedDocument, fetch_url
 
 logs.setup()
 log = logging.getLogger("isre.server")
+SNAPSHOT_RE = re.compile(r"^[0-9a-f]{16}-\d{1,3}\.png$")
 
 app = FastAPI(
     title="Indian Standards Recommendation Engine",
-    version="0.1.0",
+    version="0.2.0",
     description="SIH PS 26108 prototype. Recommends applicable Indian Standards, allied standards, "
                 "current editions and certification requirements for procurement specifications.",
 )
@@ -61,6 +63,11 @@ class RecommendRequest(BaseModel):
     output_language: Literal["en", "hi"] = "en"
 
 
+class UrlRequest(BaseModel):
+    url: str = Field(..., min_length=8, max_length=2000, examples=["http://localhost:8000/samples/03_engineering_college_hostel.pdf"])
+    output_language: Literal["en", "hi"] = "en"
+
+
 class FeedbackRequest(BaseModel):
     request_id: str = Field(..., max_length=64)
     standard_id: str = Field(..., max_length=64)
@@ -96,10 +103,81 @@ async def analyse_tender(request: Request, file: UploadFile = File(...),
     except UnsupportedDocument as exc:
         log.warning("Upload rejected: %s", exc, extra={"ctx": ctx})
         raise HTTPException(415, str(exc))
+    _log_tender(result, ctx)
+    return result
+
+
+def _log_tender(result: dict, ctx: dict) -> None:
     log.info("Tender analysed: %s", result["summary"]["status"],
              extra={"ctx": ctx | {"status": result["summary"]["status"], "items": result["summary"]["items"],
                                  "sha256": result["document"]["sha256"], "audit_id": result["request_id"]}})
+
+
+@app.post("/api/tender/analyse-url")
+def analyse_tender_url(req: UrlRequest, request: Request):
+    ctx = {"event": "upload", "request_id": request.state.request_id, "url": req.url}
+    try:
+        name, data = fetch_url(req.url)
+        result = get_engine().analyse_tender(name, data, req.output_language, source="link")
+    except FetchError as exc:
+        log.warning("Link rejected: %s", exc, extra={"ctx": ctx})
+        raise HTTPException(422, str(exc))
+    except UnsupportedDocument as exc:
+        log.warning("Link rejected: %s", exc, extra={"ctx": ctx})
+        raise HTTPException(415, str(exc))
+    _log_tender(result, ctx | {"filename": name, "size_bytes": len(data)})
     return result
+
+
+@app.get("/api/stats")
+def stats():
+    return history.stats()
+
+
+@app.get("/api/history")
+def list_history(limit: int = Query(50, ge=1, le=500), kind: Literal["tender", "search"] | None = None):
+    return {"checks": history.list_checks(limit, kind)}
+
+
+@app.get("/api/history/{entry_id}")
+def get_history(entry_id: str):
+    result = history.load(entry_id)
+    if not result:
+        raise HTTPException(404, f"No saved result for check '{entry_id}'.")
+    return result
+
+
+@app.get("/api/snapshots/{name}", include_in_schema=False)
+def snapshot(name: str):
+    path = evidence.SNAPSHOTS / name
+    if not SNAPSHOT_RE.match(name) or not path.exists():
+        raise HTTPException(404, "Snapshot not found.")
+    # Same name is re-rendered when the document is checked again, so revalidate (ETag) instead of caching blindly.
+    return FileResponse(path, media_type="image/png", headers={"Cache-Control": "no-cache"})
+
+
+DEMO_SAMPLES = ["01_office_complex_construction.pdf", "02_district_hospital_electrification.docx",
+                "03_engineering_college_hostel.pdf", "04_regional_office_facility_services.pdf",
+                "05_government_school_building.docx", "06_engineering_college_hostel_scanned.pdf",
+                "07_district_hospital_presentation.pptx"]
+DEMO_QUERIES = ["TMT reinforcement bars Fe 500D for building construction",
+                "LED street light 90 W, IP66, aluminium housing",
+                "PVC insulated cable as per IS 694:1990",
+                "22 carat gold jewellery bangles",
+                "Housekeeping services for office building"]
+
+
+@app.post("/api/demo/seed")
+def seed_demo():
+    """Run the bundled sample tenders and example searches so the dashboard has real history."""
+    eng, done = get_engine(), []
+    for name in DEMO_SAMPLES:
+        path = SAMPLES_DIR / name
+        if path.exists():
+            done.append(eng.analyse_tender(name, path.read_bytes(), source="sample")["request_id"])
+    for q in DEMO_QUERIES:
+        done.append(eng.recommend(q)["request_id"])
+    return {"checks_added": len(done)}
 
 
 @app.get("/api/standards")
@@ -146,6 +224,8 @@ if FRONTEND_DIST.exists():
 
     @app.get("/{path:path}", include_in_schema=False)
     def spa(path: str):
+        if path.startswith("api/"):
+            raise HTTPException(404, "Unknown API endpoint.")
         target = (FRONTEND_DIST / path).resolve()
         if path and target.is_file() and FRONTEND_DIST.resolve() in target.parents:
             return FileResponse(target)

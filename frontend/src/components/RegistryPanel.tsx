@@ -27,29 +27,32 @@ export default function RegistryPanel() {
     <section className="card">
       <h2>Standards Registry</h2>
       <p className="muted">
-        Demo seed covering {Object.keys(data.meta.domains).length} product domains · as of {data.meta.as_of} ·{" "}
+        {data.standards.length} standards in {Object.keys(data.meta.domains).length} product domains · as of {data.meta.as_of} ·{" "}
         {data.meta.verified ? "verified" : "not yet verified against the BIS portal"}
       </p>
-      <div className="form-row filters">
-        <select value={domain} onChange={(e) => setDomain(e.target.value)}>
+      <div className="toolbar">
+        <select value={domain} onChange={(e) => setDomain(e.target.value)} aria-label="Domain">
           <option value="">All domains</option>
           {Object.entries(data.meta.domains).map(([k, v]) => <option key={k} value={k}>{v}</option>)}
         </select>
         <input type="search" placeholder="Filter by IS number or title" value={filter} onChange={(e) => setFilter(e.target.value)} />
       </div>
-      <table className="table">
-        <thead><tr><th>Standard</th><th>Title</th><th>Type</th><th>Domain</th></tr></thead>
-        <tbody>
-          {rows.map((s) => (
-            <tr key={s.id}>
-              <td className="nowrap"><span className="std-number small">{s.label}</span></td>
-              <td>{s.title}</td>
-              <td className="nowrap">{CATEGORY_LABELS[s.category] ?? s.category}</td>
-              <td>{data.meta.domains[s.domain]}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+      <p className="muted small">Showing {rows.length} of {data.standards.length}</p>
+      <div className="table-wrap">
+        <table className="table">
+          <thead><tr><th>Standard</th><th>Title</th><th>Type</th><th>Domain</th></tr></thead>
+          <tbody>
+            {rows.map((s) => (
+              <tr key={s.id}>
+                <td className="nowrap"><span className="std-number small">{s.label}</span></td>
+                <td>{s.title}</td>
+                <td className="nowrap">{CATEGORY_LABELS[s.category] ?? s.category}</td>
+                <td>{data.meta.domains[s.domain]}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </section>
   );
 }

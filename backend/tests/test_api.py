@@ -95,6 +95,67 @@ def test_rejects_unsupported_file(client):
     assert r.status_code == 415
 
 
+def test_pptx_and_html_inputs(client):
+    deck = analyse(client, "07_district_hospital_presentation.pptx")
+    assert deck["document"]["type"] == "pptx" and deck["summary"]["status"] == "partially_acceptable"
+    html = (b"<html><head><style>p{}</style><script>var x=1;</script></head><body><h1>Tender</h1>"
+            b"<p>1. Reinforcement steel: TMT bars Fe 500, conforming to IS 1786:1985.</p>"
+            b"<p>2. Housekeeping services for the office building, daily cleaning.</p></body></html>")
+    body = client.post("/api/tender/analyse", files={"file": ("tender.html", html)}).json()
+    assert body["summary"]["items"] == 2
+    assert "var x" not in body["items"][0]["text"]
+    assert body["items"][0]["status"] == "not_acceptable"
+
+
+def test_evidence_snapshots(client):
+    body = analyse(client, "03_engineering_college_hostel.pdf")
+    first = body["items"][0]["evidence"]
+    assert first and first["page"] == 1 and first["highlights"] >= 1
+    img = client.get(first["image"])
+    assert img.status_code == 200 and img.content[:4] == b"\x89PNG"
+    assert client.get("/api/snapshots/..%2Faudit.jsonl").status_code == 404
+    assert all(i["evidence"] is None for i in analyse(client, "03_engineering_college_hostel.docx")["items"])
+
+
+def test_history_and_stats(client):
+    body = analyse(client, "02_district_hospital_electrification.docx")
+    rows = client.get("/api/history?kind=tender").json()["checks"]
+    assert rows[0]["id"] == body["request_id"] and rows[0]["status"] == "partially_acceptable" and rows[0]["reopen"]
+    saved = client.get(f"/api/history/{body['request_id']}").json()
+    assert saved["summary"] == body["summary"]
+    assert client.get("/api/history/000000000000").status_code == 404
+    s = client.get("/api/stats").json()
+    assert s["checks"]["tenders"] >= 1 and s["tenders_by_status"]["partially_acceptable"] >= 1
+    assert s["items"]["total"] >= 5 and s["recent"]
+
+
+def test_analyse_url(client):
+    import functools
+    import http.server
+    import threading
+
+    handler = functools.partial(http.server.SimpleHTTPRequestHandler, directory=str(SAMPLES))
+    handler.log_message = lambda *a: None
+    server = http.server.ThreadingHTTPServer(("127.0.0.1", 0), handler)
+    threading.Thread(target=server.serve_forever, daemon=True).start()
+    try:
+        url = f"http://127.0.0.1:{server.server_port}/03_engineering_college_hostel.pdf"
+        body = client.post("/api/tender/analyse-url", json={"url": url}).json()
+        assert body["document"]["source"] == "link" and body["summary"]["status"] == "not_acceptable"
+        missing = client.post("/api/tender/analyse-url", json={"url": url.replace("03_", "99_")})
+        assert missing.status_code == 422
+    finally:
+        server.shutdown()
+    assert client.post("/api/tender/analyse-url", json={"url": "ftp://example.com/x.pdf"}).status_code == 422
+
+
+def test_demo_seed(client):
+    before = client.get("/api/stats").json()["checks"]["total"]
+    added = client.post("/api/demo/seed").json()["checks_added"]
+    assert added == 12
+    assert client.get("/api/stats").json()["checks"]["total"] == before + added
+
+
 def test_standard_lookup_and_feedback(client):
     assert client.get("/api/standards/IS-694").json()["label"] == "IS 694:2010"
     assert client.get("/api/standards/NOPE").status_code == 404

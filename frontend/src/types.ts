@@ -72,16 +72,22 @@ export interface TenderItem {
   language: string;
   primary_standard: StandardSummary | null;
   confidence: number;
+  matched_terms: string[];
   abstained: boolean;
   status: ItemStatus;
   status_label: string;
   findings: Finding[];
   suggested_clause: string | null;
+  /** Picture of the item in the uploaded PDF; null for other formats or when it can't be located. */
+  evidence: { image: string; page: number; highlights: number } | null;
 }
 
 export interface TenderResponse {
   request_id: string;
-  document: { name: string; sha256: string; type: string; pages: number; characters: number; ocr_pages: number[]; warnings: string[] };
+  document: {
+    name: string; sha256: string; type: string; pages: number; characters: number; ocr_pages: number[];
+    warnings: string[]; source?: "upload" | "link" | "sample";
+  };
   summary: {
     items: number;
     findings: Record<Finding["severity"], number>;
@@ -103,6 +109,34 @@ export interface Health {
   data_as_of: string;
   data_verified: boolean;
   notice: string;
+}
+
+export interface CheckRow {
+  id: string;
+  time: string;
+  kind: "tender" | "search";
+  title: string;
+  source: string;
+  status: TenderStatus | "matched" | null;
+  status_label: string | null;
+  items: number | null;
+  issues: number | null;
+  standards: string[];
+  reopen: boolean;
+}
+
+export interface Stats {
+  checks: { total: number; tenders: number; searches: number };
+  items: { total: number; by_status: Record<ItemStatus, number> };
+  tenders_by_status: Record<TenderStatus, number>;
+  findings: Record<Finding["severity"], number>;
+  searches_without_match: number;
+  feedback: { accept: number; reject: number };
+  top_gaps: { label: string; count: number }[];
+  top_standards: { label: string; count: number }[];
+  first_check: string | null;
+  last_check: string | null;
+  recent: CheckRow[];
 }
 
 export interface RegistryResponse {

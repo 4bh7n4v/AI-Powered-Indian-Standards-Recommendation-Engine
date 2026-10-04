@@ -11,6 +11,9 @@ They are fictional and written for this prototype.
 | `04_regional_office_facility_services` | Facility Management Services, Regional Office: services only | **No Indian Standard applies** | The engine abstains on services and items outside the registry instead of guessing. |
 | `05_government_school_building` | Government School Building (सरकारी विद्यालय भवन): Hindi-language tender | **Partially acceptable** | Hindi items matched through the glossary. Item 1 is complete; items 2 and 3 cite no standard. |
 | `06_engineering_college_hostel_scanned.pdf` | Image-only scan of tender 03 | **Warning** | No text layer. The engine reports that OCR (PaddleOCR) is needed rather than giving an empty "all clear". |
+| `07_district_hospital_presentation.pptx` | Tender 02 as a PowerPoint deck (one slide per item) | **Partially acceptable** | PowerPoint input gives the same result as the Word version. |
+
+PDF samples (01, 03) also show **page snapshots**: each item is cropped from the page with cited IS numbers highlighted green (fine) or red (flagged), and matched words in yellow. Other formats show the same highlights on a text excerpt.
 
 ## How statuses are decided
 
@@ -24,8 +27,8 @@ They are fictional and written for this prototype.
   - no acceptable item and at least one not-acceptable item → **Not acceptable**;
   - otherwise → **Partially acceptable**.
 
-Regenerate the DOCX and PDF files after editing a `.txt` file:
+Regenerate the DOCX, PDF and PPTX files after editing a `.txt` file:
 
 ```bash
-python generate_samples.py   # needs pymupdf and python-docx (backend/requirements.txt)
+python generate_samples.py   # needs pymupdf, python-docx and python-pptx (backend/requirements.txt)
 ```
